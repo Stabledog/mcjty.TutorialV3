@@ -4,8 +4,13 @@ import com.example.tutorialv3.setup.Config;
 import com.example.tutorialv3.setup.ModSetup;
 import com.example.tutorialv3.setup.ClientSetup;
 import com.example.tutorialv3.setup.Registration;
+import com.mojang.authlib.yggdrasil.request.TelemetryEventsRequest.Event;
+
 //import com.example.tutorialv3.worldgen.ores.Ores;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -30,5 +35,11 @@ public class TutorialV3 {
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(ModSetup::init);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modbus.addListener(ClientSetup::init));
+
+        // Register our hit-like-a-girl handler
+        MinecraftForge.EVENT_BUS.addListener(TutorialV3::HitLikeAGirlHandler);
+    }
+    public static void HitLikeAGirlHandler(BreakEvent ev) {
+        LOGGER.info("Yes, you hit like a girl!");
     }
 }
